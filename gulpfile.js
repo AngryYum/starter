@@ -3,14 +3,13 @@ const namberVersion = '2' //сколько ласт версий браузер�
 
 const {src,dest,parallel,series,watch} = require('gulp')
 const sync = require('browser-sync').create()
-const sass = require('gulp-sass')
+const sass = require('gulp-sass')(require('sass'))
 const sourcemaps = require('gulp-sourcemaps')
 const gcmq = require('gulp-group-css-media-queries')
 const autoprefixer = require('gulp-autoprefixer')
 const csso = require('gulp-csso')
 const fileinclude = require('gulp-file-include')
 const webpack = require('webpack-stream')
-const ttf2woff2 = require('gulp-ttf2woff2')
 const del = require('del')
 const svgmin = require('gulp-svgmin')
 const cheerio = require('gulp-cheerio')
@@ -91,13 +90,8 @@ const scripts = () => {
         .pipe(dest('dest/scripts'))
         .pipe(sync.stream())
 }
-const woff2 = () => {
-    return src('src/fonts/src/*.*')
-        .pipe(ttf2woff2())
-        .pipe(dest('src/fonts/dest/'))
-}
 const fonts = () => {
-    return src(['src/fonts/dest/*.woff2' , 'src/fonts/dest/*.woff'])
+    return src(['src/fonts/*.woff2' , 'src/fonts/*.woff'])
         .pipe(dest('dest/fonts/'))
         .pipe(sync.stream())
 }
@@ -105,7 +99,7 @@ const remove = () => {
     return del('dest/*')
 }
 const svg = () => {
-    return src('src/imges/src/svg/*.svg')
+    return src('src/images/src/svg/*.svg')
         .pipe(svgmin({
             js2svg: {
                 pretty: true
@@ -129,16 +123,16 @@ const svg = () => {
                 }
             }
         }))
-        .pipe(dest('src/imges/dest/svg/'))
+        .pipe(dest('src/images/dest/svg/'))
         .pipe(sync.stream())
 }
 const toWebp = () => {
-    return src('src/imges/src/toWebp/**/*.*')
+    return src('src/images/src/toWebp/**/*.*')
         .pipe(webp())
-        .pipe(dest('src/imges/src/toWebp'))
+        .pipe(dest('src/images/src/toWebp'))
 }
 const img = () => {
-    return src('src/imges/src/**/*.*')
+    return src('src/images/src/**/*.*')
         .pipe(imagemin([
             imagemin.mozjpeg({
                 quality: 75,
@@ -148,11 +142,11 @@ const img = () => {
                 optimizationLevel: 5
             }),
         ]))
-        .pipe(dest('src/imges/dest/imges/'))
+        .pipe(dest('src/images/dest/images/'))
 }
 const exportImg = () => {
-    return src('src/imges/dest/**/*.*')
-        .pipe(dest('dest/imges/'))
+    return src('src/images/dest/**/*.*')
+        .pipe(dest('dest/images/'))
         .pipe(sync.stream())
 }
 const startWatch = () => {
@@ -160,7 +154,7 @@ const startWatch = () => {
     watch(['src/**/*.html' , 'src/*.html'], html)
     watch('src/**/*.js', scripts)
     watch('src/fonts/dest/*.woff2', fonts)
-    watch('src/imges/dest/**/*.**', exportImg)
+    watch('src/images/dest/**/*.**', exportImg)
     watch('./smartgrid.js' , grid)
 }
 
@@ -173,7 +167,6 @@ const grid = done => {
 
 
 
-exports.woff2 = woff2
 exports.svg = svg
 exports.toWebp = toWebp
 exports.img = img
