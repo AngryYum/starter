@@ -15,12 +15,9 @@ const svgmin = require('gulp-svgmin')
 const cheerio = require('gulp-cheerio')
 const svgSprite = require('gulp-svg-sprite')
 const replace = require('gulp-replace')
-const webp = require('gulp-webp')
-const imagemin = require('gulp-imagemin')
 const gulpif = require('gulp-if')
 
 const isDev = process.argv.includes('--dev')
-const isProd = !isDev
 let webConfig = {
     output: {
         filename: 'main.js'
