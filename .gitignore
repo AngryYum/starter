@@ -1,6 +1,4 @@
 errors.text
 screet/
 node_modules/
-dest/
-package-lock.json
 .vscode
