@@ -17,7 +17,6 @@ const svgSprite = require('gulp-svg-sprite')
 const replace = require('gulp-replace')
 const webp = require('gulp-webp')
 const imagemin = require('gulp-imagemin')
-const smartgrid =  require('smart-grid')
 const gulpif = require('gulp-if')
 
 const isDev = process.argv.includes('--dev')
@@ -126,24 +125,6 @@ const svg = () => {
         .pipe(dest('src/images/dest/svg/'))
         .pipe(sync.stream())
 }
-const toWebp = () => {
-    return src('src/images/src/toWebp/**/*.*')
-        .pipe(webp())
-        .pipe(dest('src/images/src/toWebp'))
-}
-const img = () => {
-    return src('src/images/src/**/*.*')
-        .pipe(imagemin([
-            imagemin.mozjpeg({
-                quality: 75,
-                progressive: true
-            }),
-            imagemin.optipng({
-                optimizationLevel: 5
-            }),
-        ]))
-        .pipe(dest('src/images/dest/images/'))
-}
 const exportImg = () => {
     return src('src/images/dest/**/*.*')
         .pipe(dest('dest/images/'))
@@ -155,22 +136,11 @@ const startWatch = () => {
     watch('src/**/*.js', scripts)
     watch('src/fonts/dest/*.woff2', fonts)
     watch('src/images/dest/**/*.**', exportImg)
-    watch('./smartgrid.js' , grid)
 }
-
-const grid = done => {
-    delete require.cache[require.resolve('./smartgrid.js')]
-    let settings = require('./smartgrid.js')
-    smartgrid('./src/style/libs' , settings)
-    done()
-};
 
 
 
 exports.svg = svg
-exports.toWebp = toWebp
-exports.img = img
 exports.exportImg = exportImg
-exports.grid = grid
 exports.dev = series(remove , parallel(html, style, scripts, fonts, exportImg, server, startWatch))
 exports.build = series(remove , parallel(html, style, scripts, fonts, exportImg))

@@ -5,7 +5,8 @@
   "main": "gulpfile.js",
   "scripts": {
     "dev": "gulp dev --dev",
-    "build": "gulp build"
+    "build": "gulp build",
+    "svg": "gulp svg"
   },
   "author": "Taras Shulga",
   "license": "ISC",
@@ -26,7 +27,7 @@
     "gulp-if": "^3.0.0",
     "gulp-imagemin": "^7.1.0",
     "gulp-replace": "^1.0.0",
-    "gulp-sass": "^4.1.0",
+    "gulp-sass": "^5.0.0",
     "gulp-sourcemaps": "^3.0.0",
     "gulp-svg-sprite": "^1.5.0",
     "gulp-svgmin": "^3.0.0",
